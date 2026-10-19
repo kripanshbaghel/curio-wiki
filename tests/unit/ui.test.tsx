@@ -69,9 +69,9 @@ describe('design system base components', () => {
   });
 
   it('renders SectionHeader title and action', () => {
-    render(<SectionHeader title="Wikipedia" action={<a href="/topics">See all</a>} />);
+    render(<SectionHeader title="Wikipedia" action={<a href="#see-all">See all</a>} />);
     expect(screen.getByRole('heading', { name: 'Wikipedia' })).toBeInTheDocument();
-    expect(screen.getByRole('link', { name: 'See all' })).toHaveAttribute('href', '/topics');
+    expect(screen.getByRole('link', { name: 'See all' })).toHaveAttribute('href', '#see-all');
   });
 
   it('ThemeToggle switches the document dark class on click', () => {

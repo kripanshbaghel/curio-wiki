@@ -1,6 +1,8 @@
 import '@fontsource-variable/inter';
 import 'katex/dist/katex.min.css';
 import type { Metadata } from 'next';
+import { SiteHeader } from '@/components/layout/site-header';
+import { SiteFooter } from '@/components/layout/site-footer';
 import './globals.css';
 
 export const metadata: Metadata = {
@@ -24,7 +26,11 @@ export default function RootLayout({
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeInit }} />
       </head>
-      <body className="flex min-h-screen flex-col">{children}</body>
+      <body className="flex min-h-screen flex-col">
+        <SiteHeader />
+        <main className="flex-1">{children}</main>
+        <SiteFooter />
+      </body>
     </html>
   );
 }

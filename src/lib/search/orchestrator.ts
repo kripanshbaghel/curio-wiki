@@ -4,6 +4,7 @@ import { searchWeb } from '@/lib/adapters/web';
 import { ProviderError } from '@/lib/errors';
 import { experiments } from '@/content/experiments';
 import { topics } from '@/content/topics';
+import type { Topic } from '@/content/types';
 import { normalizeQuery } from './normalize';
 import {
   NETWORK_SOURCE_IDS,

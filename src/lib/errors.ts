@@ -83,6 +83,11 @@ export function classifyHttpError(
     return new ProviderError(provider, 'auth', label, { retryable: false });
   }
 
+  // Tavily plan/pay-as-you-go limit statuses (docs.tavily.com/api-reference/endpoint/search).
+  if (status === 432 || status === 433) {
+    return new ProviderError(provider, 'quota', label, { retryable: false });
+  }
+
   if (status === 404) {
     return new ProviderError(provider, 'not_found', label, { retryable: false });
   }

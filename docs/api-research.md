@@ -44,8 +44,9 @@ developers.google.com/youtube/v3/docs/{search/list,search,videos/list,videos,err
 
 ### Selected: Tavily (default) — free tier, no credit card
 - 1,000 API credits/month (Researcher plan), explicitly "No credit card required" (tavily.com/pricing).
-- Auth: Bearer `TAVILY_API_KEY`. Request shape to confirm at implementation time against docs.tavily.com (`POST https://api.tavily.com/search`) — **exact body fields to be verified against current docs when the adapter is written** (plan Task 6).
-- Response: `results[].{title,url,content}` → our `WebSearchResult {title,url,snippet,domain}`.
+- Auth: Bearer `TAVILY_API_KEY` (`Authorization: Bearer tvly-…`) — **verified 2026-10-19** against docs.tavily.com OpenAPI (the older `{api_key}` body field is not the current scheme).
+- Request (verified): `POST https://api.tavily.com/search` with JSON `{query, max_results (0–20), include_answer:false, include_raw_content:false, search_depth:"basic" (1 credit; avoids advanced's 2-credit cost), safe_search:true}`.
+- Response (verified): `results[].{title,url,content,score}` → our `WebSearchResult {title,url,snippet,domain}`. Errors: 401 invalid key; 429 rate limit (+`Retry-After`); **432 plan limit / 433 pay-as-you-go limit** (custom statuses, mapped to non-retryable `quota`).
 
 ### Optional alternative: Brave Search API (only if user opts in — requires card)
 - `GET https://api.search.brave.com/res/v1/web/search?q=&count=1..20`, header `X-Subscription-Token: <key>`, `Accept: application/json`.
@@ -89,7 +90,7 @@ supabase.com/pricing · /docs/guides/auth · /docs/guides/auth/passwords · /doc
 
 ## 6. Open items (UNKNOWN / pending)
 
-1. Tavily exact current request/response field names — verify from docs.tavily.com at adapter implementation (Task 6).
+1. ~~Tavily exact current request/response field names~~ — **resolved 2026-10-19**: Bearer header auth, `POST /search` body `{query, max_results, include_answer:false, search_depth:"basic", safe_search:true}`, errors 401/429/432/433 (see Task 6 adapter).
 2. YouTube referrer-restricted key behavior on localhost (avoid referrer restrictions in dev).
 3. Brave "$20 free calls" claim vs $5/month documented credit.
 4. Live credentials: `YOUTUBE_API_KEY`, `TAVILY_API_KEY`, Supabase URL/anon key — user to provide during build.

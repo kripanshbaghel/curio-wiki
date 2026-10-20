@@ -20,6 +20,7 @@ export default async function SearchPage({
 
   return (
     <Container className="flex flex-col gap-8 py-8">
+      <h1 className="sr-only">{query ? `Search results for “${query}”` : 'Search'}</h1>
       <div className="sticky top-14 z-30 -mx-4 border-b border-border bg-background/90 px-4 py-3 backdrop-blur sm:-mx-6 sm:px-6">
         <SearchBox size="compact" initialValue={query} />
       </div>

@@ -19,16 +19,9 @@ const TYPE_LABELS: Record<SavedRow['resource_type'], string> = {
 };
 
 export default async function AccountPage() {
-  if (!isSupabaseConfigured()) {
-    return (
-      <Container className="py-16">
-        <EmptyState
-          title="Authentication is not configured"
-          description="Set NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY to save topics, experiments, and videos. See docs/setup.md."
-        />
-      </Container>
-    );
-  }
+  // Unconfigured auth → same destination as signed-out; /signin explains the
+  // missing setup honestly (EmptyState, no fake form).
+  if (!isSupabaseConfigured()) redirect('/signin');
 
   const auth = await requireUser('/account');
   if ('redirect' in auth) redirect(auth.redirect);

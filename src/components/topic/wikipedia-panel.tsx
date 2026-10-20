@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react';
 import { getRelatedWikipedia, getWikipediaSummary } from '@/lib/adapters/wikipedia';
 import { Card } from '@/components/ui/card';
 import { EmptyState } from '@/components/ui/empty-state';
@@ -9,15 +10,15 @@ import { WikiAttribution } from '@/components/search/wiki-attribution';
  * Failures render inside this card only — the curated page stays usable.
  */
 export async function WikipediaPanel({ wikipediaTitle }: { wikipediaTitle: string }) {
+  let content: ReactNode;
   try {
     const [summary, related] = await Promise.all([
       getWikipediaSummary(wikipediaTitle),
       getRelatedWikipedia(wikipediaTitle, 5),
     ]);
 
-    return (
-      <Card>
-        <h2 className="text-lg font-semibold tracking-tight text-foreground">From Wikipedia</h2>
+    content = (
+      <>
         {summary ? (
           <div className="mt-3 flex items-start gap-4">
             {summary.thumbnailUrl ? (
@@ -70,16 +71,21 @@ export async function WikipediaPanel({ wikipediaTitle }: { wikipediaTitle: strin
         <div className="mt-4">
           <WikiAttribution />
         </div>
-      </Card>
+      </>
     );
   } catch (error) {
-    return (
-      <Card>
-        <ErrorState
-          title="Wikipedia is unavailable"
-          description={error instanceof Error ? error.message : 'The request failed.'}
-        />
-      </Card>
+    content = (
+      <ErrorState
+        title="Wikipedia is unavailable"
+        description={error instanceof Error ? error.message : 'The request failed.'}
+      />
     );
   }
+
+  return (
+    <Card>
+      <h2 className="text-lg font-semibold tracking-tight text-foreground">From Wikipedia</h2>
+      {content}
+    </Card>
+  );
 }

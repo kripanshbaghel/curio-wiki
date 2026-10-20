@@ -1,7 +1,7 @@
 # Curio Wiki — Setup Guide
 
-> Status: Supabase/auth setup is documented below (Task 13). YouTube/Tavily
-> verification commands and troubleshooting land in Task 17.
+> Complete: environment variables, Supabase + Google OAuth, YouTube, Tavily,
+> verification commands, and troubleshooting.
 
 ## Open configuration items (from `docs/api-research.md` §6)
 
@@ -83,3 +83,69 @@ npm run dev
 # /signin renders the real form (not the "not configured" state)
 # /account (signed out) → redirects to /signin?next=%2Faccount
 ```
+
+## YouTube Data API v3
+
+1. https://console.cloud.google.com/ → **New project** (or pick one).
+2. **APIs & Services → Library** → search "YouTube Data API v3" → **Enable**.
+3. **APIs & Services → Credentials → Create credentials → API key** → copy into
+   `YOUTUBE_API_KEY` (server-side only; never `NEXT_PUBLIC_*`).
+4. **Referrer restrictions caveat:** during localhost development do NOT apply
+   HTTP-referrer restrictions — their localhost behaviour is undocumented and
+   commonly breaks. Restrict the key in production (by referrer for the
+   server-rendered origin, or by IP if you know it). An unrestricted key is
+   acceptable while the quota stays on the free tier.
+5. Quota: default 10,000 units/day. CurioWiki's search uses `search.list`
+   (100 units per call) + one batched `videos.list` (1 unit) per query —
+   roughly 100 searches/day. Without the key, `/videos` and the video search
+   section show an honest "YouTube API key not configured" state.
+
+## Tavily web search (default web provider)
+
+1. https://tavily.com → sign up (no credit card) → copy the API key into
+   `TAVILY_API_KEY` (server-side only).
+2. Free tier: 1,000 "basic" credits/month; CurioWiki always sends
+   `search_depth: "basic"` and `include_answer: false` to stay at 1 credit
+   per search.
+3. Auth is the `Authorization: Bearer` header (older guides showing an
+   `api_key` JSON field are outdated). Without Tavily **and** without the
+   optional Brave key, the web results section shows a classified
+   "not configured" error.
+
+## Verification commands
+
+```bash
+# Unit + integration tests (no network needed)
+npx vitest run
+
+# Typecheck + lint
+npx tsc --noEmit && npx eslint .
+
+# Production build (also runs content schema validation)
+npm run build
+
+# Live adapter smoke tests (require .env.local keys)
+npm run smoke:wikipedia
+npm run smoke:youtube
+npm run smoke:web
+
+# E2E (starts its own dev server on port 3123)
+npx playwright test
+```
+
+## Troubleshooting
+
+| Symptom | Cause / fix |
+|---|---|
+| Section says "not configured" | Matching key missing in `.env.local` — see the section above; restart the dev server after editing env files. |
+| YouTube `quotaExceeded` / HTTP 403 | Daily quota exhausted or key restrictions blocking the request — check Cloud Console quota page; restrictions off in dev. |
+| Tavily HTTP 401 | Invalid key (must start with the value Tavily issued; sent as `Authorization: Bearer`). |
+| Tavily HTTP 429 / 432 / 433 | Rate limit (retry later) or monthly credit quota exhausted — wait for reset or upgrade. |
+| 429 from `/api/search` | Built-in in-memory rate limit: 30 requests/min/IP in dev. |
+| Web section empty but key set | All results failed the safe-URL filter — try a different query; the section would otherwise show a "failed" notice, not silence. |
+| `/signin` shows "not configured" | `NEXT_PUBLIC_SUPABASE_URL`/`ANON_KEY` unset or incomplete (URL must be the base URL, no `/rest/v1/` path). |
+| Sign-in fails "email not confirmed" | Confirm the address from the Supabase auth email first. |
+| Password-reset email never arrives | Add `localhost` to Supabase **Authentication → URL Configuration → Authorized domains**. |
+| `/account` saved list shows setup state | `saved_resources` migration not applied — run `supabase/migrations/20261019000001_saved_resources.sql` (see Supabase §4). |
+| Build fails with "Invalid … content" | A seed file violates the content schema — the message lists file, index, and field; fix the entry (rules in `.opencode/skills/experiment-content-safety`). |
+| Tests hang on Supabase imports | Never add `await import('ws')` to server code — the NoopWebSocket transport exists for Node 20/test compatibility. |

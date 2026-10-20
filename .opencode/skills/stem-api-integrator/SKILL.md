@@ -1,6 +1,6 @@
 ---
 name: stem-api-integrator
-description: Implement and maintain CurioWiki external search integrations (Wikipedia MediaWiki API, YouTube Data API v3, Brave Search API) with modular providers and a consistent result structure.
+description: Implement and maintain CurioWiki external search integrations (Wikipedia MediaWiki API, YouTube Data API v3, Tavily web search default, Brave fallback) with modular providers and a consistent result structure.
 ---
 
 # STEM API Integrator
@@ -12,33 +12,37 @@ Official documentation:
 - MediaWiki search: https://www.mediawiki.org/wiki/API:Search
 - MediaWiki REST reference: https://www.mediawiki.org/wiki/API:REST_API/Reference
 - YouTube search.list: https://developers.google.com/youtube/v3/docs/search/list
-- Brave Search API: https://brave.com/search/api/
+- Tavily: https://docs.tavily.com (default general web provider)
+- Brave Search API: https://brave.com/search/api/ (optional fallback)
 
 ## Wikipedia (MediaWiki API)
 
-- Search for relevant articles with the MediaWiki search API.
-- Retrieve summaries and article metadata where the endpoint provides them.
+- Search: `GET https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=<q>&format=json` (keyless).
+- Summary: `GET https://en.wikipedia.org/api/rest_v1/page/summary/<title>` (Page Content Service, "PCS"). Fields used: `title`, `extract`, `description`, `thumbnail.source`, `content_urls.desktop.page`, `type` (`standard|disambiguation|no-extract`).
+- Related: `GET https://en.wikipedia.org/w/api.php?action=query&list=morelike&morelike=<title>&mllimit=…` for "see also" results.
 - Return the original article titles and canonical source links for every result.
 - Handle empty results, missing articles, disambiguation pages, and API failures with a clear user-facing message.
-- Preserve source attribution on every result.
-- Verify the current endpoints and response fields in the official docs above before implementation. Never invent fields.
+- Preserve CC BY-SA attribution and link the source page on every rendered result.
+- Never invent response fields; verify in the docs above before changing the adapter.
 
 ## YouTube (Data API v3)
 
 - Search for relevant STEM demonstrations and experiment videos with YouTube Data API v3 `search.list`.
+- Auth: server-side key sent as `X-Goog-Api-Key` header; `safeSearch=strict`; enrich with one batched `videos.list` (`part=snippet,status,contentDetails`).
 - Display available titles, thumbnails, channel names, and valid video links (for example `https://www.youtube.com/watch?v=<id>`).
 - Support topic filters (query terms, safe search, relevance ordering) and pagination (`pageToken`, `maxResults`) when necessary.
 - Handle missing credentials, unavailable API, quota exhaustion (`quotaExceeded`), and empty results without crashing search.
 - Minimise quota consumption: request only needed `part` values, cache permitted responses, avoid duplicate calls and unneeded pagination.
-- Link to or embed permitted videos only. Never download protected video content.
+- Embed via `https://www.youtube-nocookie.com/embed/<id>` only when `status.embeddable` and the video is available. Never download protected video content.
 
-## General web search (Brave Search API, optional)
+## General web search (Tavily default, Brave fallback)
 
-- Treat Brave Search as an optional provider, not a requirement.
-- Verify the current Brave API documentation and usage terms before integrating.
+- Default provider: Tavily. `POST https://api.tavily.com/search` with header `Authorization: Bearer <TAVILY_API_KEY>` (NOT an `api_key` body field — verified against docs.tavily.com OpenAPI) and JSON body `{query, max_results, include_answer:false, search_depth:"basic", safe_search:true}`. One "basic" search = 1 credit of the 1,000/month free tier.
+- Tavily error statuses: 401 invalid key, 429 rate limit, 432/433 monthly quota exceeded.
+- Fallback provider (only when Tavily key unset): Brave, header `X-Subscription-Token`.
 - Keep secret keys on the server only. Read credentials from environment variables. Never commit keys, embed them in frontend bundles, or store them in browser storage or logs.
 - Do not assume any trial or credit allowance is permanent.
-- When Brave is unconfigured or unavailable, fall back to ordinary browser-based web search.
+- When both are unconfigured, the web section must show an honest "not configured" state — never fake results.
 - Display original source links plus available snippets.
 - Clearly distinguish retrieved third-party sources from CurioWiki-authored or independently verified content.
 

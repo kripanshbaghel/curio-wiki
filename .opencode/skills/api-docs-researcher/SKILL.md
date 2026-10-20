@@ -10,9 +10,11 @@ Research official documentation before CurioWiki builds or changes an API integr
 Official references:
 
 - MediaWiki search: https://www.mediawiki.org/wiki/API:Search
+- MediaWiki REST (Page Content Service): https://www.mediawiki.org/wiki/API:REST_API/Reference
 - YouTube Data API v3: https://developers.google.com/youtube/v3
 - YouTube search.list: https://developers.google.com/youtube/v3/docs/search/list
-- Brave Search API: https://brave.com/search/api/
+- Tavily (default web provider): https://docs.tavily.com — current auth is `Authorization: Bearer`, `POST https://api.tavily.com/search`
+- Brave Search API (fallback): https://brave.com/search/api/
 - OpenCode Agent Skills: https://docs.opencode.ai/docs/skills/
 
 ## Workflow

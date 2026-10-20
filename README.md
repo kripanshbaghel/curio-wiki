@@ -1,36 +1,40 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Curio Wiki
 
-## Getting Started
+A symmetrical STEM learning platform for students: curated topics and safe experiments, plus real live search across Wikipedia, YouTube, and the open web — with accounts and saved items, all on free tiers.
 
-First, run the development server:
+- **Search** (`/search`) — one query fans out to Wikipedia (keyless), YouTube (privacy-enhanced embeds), and Tavily web results, alongside CurioWiki's own topics and experiments. Each section can fail or be unconfigured independently without breaking the page.
+- **Learn** (`/topics`, `/experiments`, `/subjects`) — 21 curated topics with real KaTeX equations, 18 safety-reviewed experiments with supervision banners, and six subject collections.
+- **Watch** (`/videos`) — YouTube search with `youtube-nocookie` embeds and honest fallbacks when embedding is disabled.
+- **Resources** (`/resources`) — curated links to reputable educational organizations.
+- **Accounts** (`/signin`, `/account`) — Supabase email/password + Google OAuth; per-user saved items protected by Postgres RLS.
+
+## Quick start
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+cp .env.example .env.local   # add keys — see docs/setup.md
+npm install
+npm run dev                  # http://localhost:3000
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Without keys the site still works: local content renders, and each external section shows an honest "not configured" state.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Verify
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npx tsc --noEmit && npx eslint . && npx vitest run   # 146+ tests
+npm run build
+npm run smoke:wikipedia                               # live adapter checks
+npx playwright test                                   # e2e (starts dev server on :3123)
+```
 
-## Learn More
+## Docs
 
-To learn more about Next.js, take a look at the following resources:
+- `docs/setup.md` — environment variables, Supabase/Google OAuth/YouTube/Tavily setup, verification, troubleshooting
+- `docs/deployment.md` — Vercel (or any Node host), env upload, OAuth redirect checklist, cost table
+- `docs/api-research.md` — verified endpoint/auth/quota research for every provider
+- `AGENTS.md` — architecture map and conventions for AI contributors
+- `docs/superpowers-setup.md` — project-local OpenCode skills/plugins
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Stack
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Next.js 15 (App Router) · React 19 · TypeScript · Tailwind CSS v4 · Zod · Vitest + Playwright · Supabase (`@supabase/ssr`) · KaTeX

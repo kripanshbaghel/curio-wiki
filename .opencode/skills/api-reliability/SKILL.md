@@ -21,6 +21,7 @@ Keep CurioWiki's integrations secure, reliable, testable, and economical. Apply 
 - Apply sensible request timeouts to every outbound call.
 - Parse external responses defensively. Handle missing fields and unexpected shapes.
 - Distinguish empty results, invalid input, authentication failures, rate limits, quota exhaustion, network errors, and malformed responses, and report each appropriately.
+- Provider-specific failure facts: Tavily returns 401 (bad key), 429 (rate limit), 432/433 (monthly quota); YouTube `quotaExceeded` in the error `reason`; Wikipedia search failures must degrade to local curated content, never fake results.
 - Retry only appropriate transient failures with bounded backoff. Honour provider retry instructions (such as `Retry-After`) where given.
 - Prevent infinite retries and excessive API consumption.
 - Ensure a failed provider does not crash the entire CurioWiki search experience. Return successful providers' results with a notice about the failure.

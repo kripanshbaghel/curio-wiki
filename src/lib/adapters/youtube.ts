@@ -49,6 +49,13 @@ function watchUrl(id: string): string {
   return `https://www.youtube.com/watch?v=${id}`;
 }
 
+/** YouTube video ids are exactly 11 characters of [A-Za-z0-9_-]. */
+const YOUTUBE_ID_PATTERN = /^[\w-]{11}$/;
+
+export function isValidYouTubeId(id: string): boolean {
+  return YOUTUBE_ID_PATTERN.test(id);
+}
+
 function embedUrlFor(id: string): string {
   return `https://www.youtube-nocookie.com/embed/${id}`;
 }

@@ -26,6 +26,8 @@
   --ring: rgba(53, 72, 201, 0.45);
   --danger: #b42318;
   --danger-foreground: #ffffff;
+  --success: #15803d;
+  --success-foreground: #ffffff;
 
   --c-physics: #2563eb;
   --c-chemistry: #7c3aed;
@@ -50,6 +52,8 @@
   --ring: rgba(124, 140, 255, 0.5);
   --danger: #f97066;
   --danger-foreground: #10131c;
+  --success: #4ade80;
+  --success-foreground: #10131c;
 
   --c-physics: #60a5fa;
   --c-chemistry: #a78bfa;
@@ -80,6 +84,8 @@
   --color-ring: var(--ring);
   --color-danger: var(--danger);
   --color-danger-foreground: var(--danger-foreground);
+  --color-success: var(--success);
+  --color-success-foreground: var(--success-foreground);
 
   --color-physics: var(--c-physics);
   --color-chemistry: var(--c-chemistry);

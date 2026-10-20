@@ -1,46 +1,54 @@
-import 'server-only';
-import { createServerClient, type CookieOptions } from '@supabase/ssr';
+import { createServerClient as createSSRServerClient } from '@supabase/ssr';
 import type { WebSocketLikeConstructor } from '@supabase/realtime-js';
+import type { User } from '@supabase/supabase-js';
 import { cookies } from 'next/headers';
-import { WebSocket } from 'ws';
+import { isSupabaseConfigured } from '@/lib/config/env';
+import { NoopWebSocket } from '@/lib/supabase/noop-websocket';
 
-/**
- * @supabase/realtime-js ≥2.118 requires Node ≥22's native WebSocket and throws
- * at client construction on Node 20. We never use realtime channels, but the
- * constructor still checks — injecting `ws` satisfies it cheaply.
- * (https://github.com/orgs/supabase/discussions/45715)
- */
-const serverOptions = {
-  realtime: { transport: WebSocket as unknown as WebSocketLikeConstructor },
-} as const;
-
-export function isSupabaseConfigured(): boolean {
-  return Boolean(
-    process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
-  );
-}
+export { isSupabaseConfigured };
 
 export async function createSupabaseServerClient() {
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+  if (!url || !anonKey) {
+    throw new Error('Supabase is not configured.');
+  }
   const cookieStore = await cookies();
-  return createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL ?? '',
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ?? '',
-    {
-      cookies: {
-        getAll() {
-          return cookieStore.getAll();
-        },
-        setAll(cookiesToSet: { name: string; value: string; options: CookieOptions }[]) {
-          try {
-            for (const { name, value, options } of cookiesToSet) {
-              cookieStore.set(name, value, options);
-            }
-          } catch {
-            // Called from a Server Component — middleware refreshes sessions.
-          }
-        },
+  return createSSRServerClient(url, anonKey, {
+    cookies: {
+      getAll() {
+        return cookieStore.getAll();
       },
-      ...serverOptions,
+      setAll(cookiesToSet) {
+        try {
+          cookiesToSet.forEach(({ name, value, options }) =>
+            cookieStore.set(name, value, options),
+          );
+        } catch {
+          // Server Component — ignore.
+        }
+      },
     },
-  );
+    realtime: {
+      transport: NoopWebSocket as unknown as WebSocketLikeConstructor,
+    },
+  });
+}
+
+export async function getOptionalUser(): Promise<User | null> {
+  if (!isSupabaseConfigured()) return null;
+  const supabase = await createSupabaseServerClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  return user;
+}
+
+export async function requireUser(
+  pathname = '/account',
+): Promise<{ user: User } | { redirect: string }> {
+  if (!isSupabaseConfigured()) return { redirect: '/signin' };
+  const user = await getOptionalUser();
+  if (!user) return { redirect: `/signin?next=${encodeURIComponent(pathname)}` };
+  return { user };
 }

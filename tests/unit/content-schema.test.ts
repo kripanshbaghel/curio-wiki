@@ -107,3 +107,98 @@ describe('content schema safety and validation', () => {
     expect(message).toContain('1');
   });
 });
+
+import { collections } from '@/content/collections';
+import { experiments } from '@/content/experiments';
+import { subjects } from '@/content/subjects';
+import { topics } from '@/content/topics';
+import { SUBJECT_KEYS } from '@/content/types';
+
+describe('curated content catalog', () => {
+  it('has all 6 subjects', () => {
+    expect(subjects).toHaveLength(SUBJECT_KEYS.length);
+    expect(subjects.map((subject) => subject.slug).sort()).toEqual([...SUBJECT_KEYS].sort());
+  });
+
+  it('has at least 18 topics with unique slugs', () => {
+    expect(topics.length).toBeGreaterThanOrEqual(18);
+    const slugs = topics.map((topic) => topic.slug);
+    expect(new Set(slugs).size).toBe(slugs.length);
+  });
+
+  it('has at least 15 experiments with unique slugs', () => {
+    expect(experiments.length).toBeGreaterThanOrEqual(15);
+    const slugs = experiments.map((experiment) => experiment.slug);
+    expect(new Set(slugs).size).toBe(slugs.length);
+  });
+
+  it('has 5–6 collections with unique slugs', () => {
+    expect(collections.length).toBeGreaterThanOrEqual(5);
+    expect(collections.length).toBeLessThanOrEqual(6);
+    const slugs = collections.map((collection) => collection.slug);
+    expect(new Set(slugs).size).toBe(slugs.length);
+  });
+
+  it('every topic cross-reference resolves', () => {
+    const experimentSlugs = new Set(experiments.map((experiment) => experiment.slug));
+    const collectionSlugs = new Set(collections.map((collection) => collection.slug));
+    for (const topic of topics) {
+      for (const slug of topic.relatedExperimentSlugs) {
+        expect(experimentSlugs.has(slug), `topic ${topic.slug} → experiment ${slug}`).toBe(true);
+      }
+      for (const slug of topic.collectionSlugs) {
+        expect(collectionSlugs.has(slug), `topic ${topic.slug} → collection ${slug}`).toBe(true);
+      }
+    }
+  });
+
+  it('every collection references existing topics', () => {
+    const topicSlugs = new Set(topics.map((topic) => topic.slug));
+    for (const collection of collections) {
+      expect(collection.topicSlugs.length).toBeGreaterThan(0);
+      for (const slug of collection.topicSlugs) {
+        expect(topicSlugs.has(slug), `collection ${collection.slug} → topic ${slug}`).toBe(true);
+      }
+    }
+  });
+
+  it("every experiment's topic exists", () => {
+    const topicSlugs = new Set(topics.map((topic) => topic.slug));
+    for (const experiment of experiments) {
+      expect(topicSlugs.has(experiment.topic), `experiment ${experiment.slug} → ${experiment.topic}`).toBe(
+        true,
+      );
+    }
+  });
+
+  it('every topic has a real-looking Wikipedia title and at least one key concept', () => {
+    for (const topic of topics) {
+      expect(topic.wikipediaTitle.length).toBeGreaterThan(0);
+      expect(topic.wikipediaTitle).not.toMatch(/:\/\//);
+      expect(topic.keyConcepts.length).toBeGreaterThan(0);
+    }
+  });
+
+  it('spot-checks accurate equations', () => {
+    const newton = topics.find((topic) => topic.slug === 'newtons-laws-of-motion');
+    expect(newton?.equations[0]?.latex).toContain('ma');
+
+    const idealGas = topics.find((topic) => topic.slug === 'states-of-matter');
+    expect(idealGas?.equations.some((equation) => /PV\s*=\s*nRT/i.test(equation.latex))).toBe(true);
+
+    const quadratic = topics.find((topic) => topic.slug === 'quadratic-equations');
+    expect(
+      quadratic?.equations.some((equation) => equation.latex.includes('\\sqrt{b^2 - 4ac}')),
+    ).toBe(true);
+  });
+
+  it('every experiment carries safety notes and a source', () => {
+    for (const experiment of experiments) {
+      expect(experiment.safety.length).toBeGreaterThan(0);
+      expect(experiment.sources.length).toBeGreaterThan(0);
+      for (const source of experiment.sources) {
+        expect(source.url.startsWith('https://') || source.url.startsWith('http://')).toBe(true);
+      }
+    }
+  });
+});

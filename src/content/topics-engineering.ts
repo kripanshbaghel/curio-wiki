@@ -66,7 +66,7 @@ export const engineeringTopicSeeds: Topic[] = [
     "category": "mechanical-engineering",
     "relatedSlugs": [
       "newtons-laws-of-motion",
-      "energy-and-work"
+      "work-energy-theorem"
     ],
     "sources": [
       {

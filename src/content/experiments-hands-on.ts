@@ -3,8 +3,8 @@ import type { Experiment } from './types';
 /**
  * Hands-on home/classroom experiment seeds (existing + agent B additions).
  * Owned by content agent B — extend this array with new entries.
- * Topic slugs available: newtons-laws-of-motion, simple-pendulum, energy-and-work,
- * electric-circuits, waves-and-sound, optics-light, atomic-structure, chemical-bonding,
+ * Topic slugs available: newtons-laws-of-motion, simple-pendulum, work-energy-theorem,
+ * electric-circuits, waves-and-sound, refraction-and-snells-law, atomic-structure, chemical-bonding,
  * states-of-matter, quadratic-equations, trigonometry-basics, probability-basics,
  * photosynthesis, cell-biology, human-circulatory-system, genetics-basics,
  * ecology-and-ecosystems, computer-hardware-basics, programming-algorithms, simple-machines.
@@ -436,7 +436,7 @@ export const handsOnExperimentSeeds: Experiment[] = [
     slug: 'solar-oven-smores',
     title: 'Solar oven s’mores',
     subject: 'engineering',
-    topic: 'energy-and-work',
+    topic: 'work-energy-theorem',
     level: 'intermediate',
     supervision: 'adult-required',
     objective:

@@ -12,9 +12,9 @@ const rawCollections: unknown[] = [
     topicSlugs: [
       'newtons-laws-of-motion',
       'simple-pendulum',
-      'energy-and-work',
+      'work-energy-theorem',
       'waves-and-sound',
-      'optics-light',
+      'refraction-and-snells-law',
     ],
   },
   {

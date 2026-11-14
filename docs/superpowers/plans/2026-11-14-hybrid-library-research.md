@@ -112,17 +112,15 @@ Semantics: filter by subject/category/collection (`collection` via `collections`
 
 ---
 
-### Tasks 3–8: Content batches (one subject each, validated before the next)
+### Task 3: Physics content batch (~50 topics)
 
-Pattern applies to each task (3 Physics, 4 Chemistry, 5 Biology, 6 Mathematics, 7 Technology, 8 Engineering).
+**Files:** Modify `src/content/topics-physics.ts`; extend `tests/unit/content-schema.test.ts`.
 
-**Files:** Modify `src/content/topics-<subject>.ts`; extend `tests/unit/content-catalog.test.ts`.
+**Interfaces:** `Topic` fields from Task 1 unchanged. Categories from `SUBJECT_CATEGORIES.physics`. Coverage required by spec §1: mechanics, motion, forces, energy, gravity, fluids, buoyancy, waves, sound, optics, electricity, magnetism, thermodynamics, modern physics, astronomy (plus further canonical topics).
 
-**Interfaces:** `Topic` fields from Task 1 unchanged. Category sets per subject from `SUBJECT_CATEGORIES`.
-
-- [ ] **Step 1: Author** — dispatch two `general` subagents (25–30 topics each) with the shared brief: real, canonical STEM topics covering the spec's mandated areas (Physics: mechanics, motion, forces, energy, gravity, fluids, buoyancy, waves, sound, optics, electricity, magnetism, thermodynamics, modern physics, astronomy — etc. per subject per spec §1); stable kebab-case slug; 1–2 sentence factual summary grounded in the topic's Wikipedia article; 3–5 key concepts; `category` from the subject's set (spread across all categories); `wikipediaTitle` = canonical article; `sources` = Wikipedia URL + 1–2 authoritative references (universities, NASA/NOAA/NIST/ACS/IEEE etc.); `relatedSlugs` = 2–4 slugs from topics that already exist in the repo (cross-subject links allowed only to existing topics). Forbidden: placeholder text, invented equations/claims, duplicates of existing topics, "Introduction to X" filler.
-- [ ] **Step 2: Merge + validate schema** — `npx vitest run tests/unit/content-schema.test.ts tests/unit/content-catalog.test.ts` (uniqueness and cross-refs must stay green across the growing library).
-- [ ] **Step 3: Add the subject's floor test** — e.g.
+- [ ] **Step 1: Author** — dispatch two `general` subagents (25–30 topics each) with the shared brief: real, canonical STEM topics covering the required areas; stable kebab-case slug; 1–2 sentence factual summary grounded in the topic's Wikipedia article; 3–5 key concepts; `category` from the subject's set (spread across all categories); `wikipediaTitle` = canonical article; `sources` = Wikipedia URL + 1–2 authoritative references (universities, NASA/NOAA/NIST/ACS/IEEE etc.); `relatedSlugs` = 2–4 slugs from topics that already exist in the repo (cross-subject links allowed only to existing topics). Forbidden: placeholder text, invented equations/claims, duplicates of existing topics, "Introduction to X" filler.
+- [ ] **Step 2: Merge + validate schema** — `npx vitest run tests/unit/content-schema.test.ts` (uniqueness and cross-refs must stay green across the growing library).
+- [ ] **Step 3: Add the subject's floor test**:
 
 ```ts
 it('has at least 50 physics topics', () => {
@@ -133,7 +131,72 @@ it('has at least 50 physics topics', () => {
 plus per-category coverage: every declared physics category has ≥1 topic.
 - [ ] **Step 4: Live Wikipedia title verification** — `npx tsx scripts/verify-wikipedia-titles.ts physics`; every title must PASS (fix or drop failures, re-run).
 - [ ] **Step 5: Fact-sample review** — dispatch one fresh reviewer subagent over the batch file: flag fabricated claims, wrong categories, vague summaries, duplicate concepts; apply fixes.
-- [ ] **Step 6: Gates + commit** — `npx tsc --noEmit && npx eslint . && npx vitest run`; commit `content: <subject> library — N validated topics`.
+- [ ] **Step 6: Gates + commit** — `npx tsc --noEmit && npx eslint . && npx vitest run`; commit `content: physics library — N validated topics`.
+
+### Task 4: Chemistry content batch (~50 topics)
+
+**Files:** Modify `src/content/topics-chemistry.ts`; extend `tests/unit/content-schema.test.ts`.
+
+**Interfaces:** As Task 3. Categories from `SUBJECT_CATEGORIES.chemistry`. Coverage required by spec §1: atoms, elements, the periodic table, chemical bonding, reactions, acids and bases, solutions, stoichiometry, organic chemistry, electrochemistry, thermodynamics.
+
+- [ ] **Step 1: Author** two `general` subagents (25–30 topics each) with the Task 3 brief, chemistry coverage list, category set, and `relatedSlugs` limited to existing topics.
+- [ ] **Step 2: Merge + validate** — `npx vitest run tests/unit/content-schema.test.ts`.
+- [ ] **Step 3: Floor + category coverage test** — `at least 50 chemistry topics` and every chemistry category ≥1.
+- [ ] **Step 4: Live title check** — `npx tsx scripts/verify-wikipedia-titles.ts chemistry`.
+- [ ] **Step 5: Reviewer subagent fact-sample**; apply fixes.
+- [ ] **Step 6: Gates + commit** — `content: chemistry library — N validated topics`.
+
+### Task 5: Biology content batch (~50 topics)
+
+**Files:** Modify `src/content/topics-biology.ts`; extend `tests/unit/content-schema.test.ts`.
+
+**Interfaces:** As Task 3. Categories from `SUBJECT_CATEGORIES.biology`. Coverage: cells, genetics, evolution, ecology, human biology, microorganisms, plants, anatomy, physiology, molecular biology.
+
+- [ ] **Step 1: Author** two `general` subagents with the Task 3 brief and biology coverage list.
+- [ ] **Step 2: Merge + validate** — `npx vitest run tests/unit/content-schema.test.ts`.
+- [ ] **Step 3: Floor + category coverage test** — `at least 50 biology topics`.
+- [ ] **Step 4: Live title check** — `npx tsx scripts/verify-wikipedia-titles.ts biology`.
+- [ ] **Step 5: Reviewer subagent fact-sample**; apply fixes.
+- [ ] **Step 6: Gates + commit** — `content: biology library — N validated topics`.
+
+### Task 6: Mathematics content batch (~50 topics)
+
+**Files:** Modify `src/content/topics-mathematics.ts`; extend `tests/unit/content-schema.test.ts`.
+
+**Interfaces:** As Task 3. Categories from `SUBJECT_CATEGORIES.mathematics`. Coverage: arithmetic, algebra, geometry, trigonometry, calculus, probability, statistics, number theory, vectors, matrices, discrete mathematics.
+
+- [ ] **Step 1: Author** two `general` subagents with the Task 3 brief and mathematics coverage list.
+- [ ] **Step 2: Merge + validate** — `npx vitest run tests/unit/content-schema.test.ts`.
+- [ ] **Step 3: Floor + category coverage test** — `at least 50 mathematics topics`.
+- [ ] **Step 4: Live title check** — `npx tsx scripts/verify-wikipedia-titles.ts mathematics`.
+- [ ] **Step 5: Reviewer subagent fact-sample** (equations spot-checked for accuracy); apply fixes.
+- [ ] **Step 6: Gates + commit** — `content: mathematics library — N validated topics`.
+
+### Task 7: Technology content batch (~50 topics)
+
+**Files:** Modify `src/content/topics-technology.ts`; extend `tests/unit/content-schema.test.ts`.
+
+**Interfaces:** As Task 3. Categories from `SUBJECT_CATEGORIES.technology`. Coverage: computer hardware, operating systems, programming, algorithms, databases, networks, cybersecurity, artificial intelligence, robotics, electronics.
+
+- [ ] **Step 1: Author** two `general` subagents with the Task 3 brief and technology coverage list.
+- [ ] **Step 2: Merge + validate** — `npx vitest run tests/unit/content-schema.test.ts`.
+- [ ] **Step 3: Floor + category coverage test** — `at least 50 technology topics`.
+- [ ] **Step 4: Live title check** — `npx tsx scripts/verify-wikipedia-titles.ts technology`.
+- [ ] **Step 5: Reviewer subagent fact-sample**; apply fixes.
+- [ ] **Step 6: Gates + commit** — `content: technology library — N validated topics`.
+
+### Task 8: Engineering content batch (~50 topics)
+
+**Files:** Modify `src/content/topics-engineering.ts`; extend `tests/unit/content-schema.test.ts`.
+
+**Interfaces:** As Task 3. Categories from `SUBJECT_CATEGORIES.engineering`. Coverage: mechanical, electrical, civil, chemical, aerospace, biomedical engineering, materials, structures, circuits, design, engineering principles.
+
+- [ ] **Step 1: Author** two `general` subagents with the Task 3 brief and engineering coverage list.
+- [ ] **Step 2: Merge + validate** — `npx vitest run tests/unit/content-schema.test.ts`.
+- [ ] **Step 3: Floor + category coverage test** — `at least 50 engineering topics`.
+- [ ] **Step 4: Live title check** — `npx tsx scripts/verify-wikipedia-titles.ts engineering`.
+- [ ] **Step 5: Reviewer subagent fact-sample**; apply fixes.
+- [ ] **Step 6: Gates + commit** — `content: engineering library — N validated topics`.
 
 ---
 

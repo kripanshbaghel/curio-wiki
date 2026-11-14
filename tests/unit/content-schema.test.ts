@@ -152,6 +152,7 @@ describe('content schema safety and validation', () => {
 });
 
 import { collections } from '@/content/collections';
+import { SUBJECT_CATEGORIES } from '@/content/categories';
 import { experiments } from '@/content/experiments';
 import { subjects } from '@/content/subjects';
 import { topics } from '@/content/topics';
@@ -167,6 +168,19 @@ describe('curated content catalog', () => {
     expect(topics.length).toBeGreaterThanOrEqual(18);
     const slugs = topics.map((topic) => topic.slug);
     expect(new Set(slugs).size).toBe(slugs.length);
+  });
+
+  it('has at least 50 physics topics', () => {
+    expect(topics.filter((topic) => topic.subject === 'physics').length).toBeGreaterThanOrEqual(50);
+  });
+
+  it('covers every physics category with at least one topic', () => {
+    for (const category of SUBJECT_CATEGORIES.physics) {
+      expect(
+        topics.some((topic) => topic.subject === 'physics' && topic.category === category),
+        category,
+      ).toBe(true);
+    }
   });
 
   it('has globally unique titles and aliases (case-insensitive)', () => {

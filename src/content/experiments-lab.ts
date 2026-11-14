@@ -3,8 +3,8 @@ import type { Experiment } from './types';
 /**
  * Physics/chemistry/biology experiment seeds (agent C).
  * Owned by content agent C — extend this array with new entries.
- * Topic slugs available: newtons-laws-of-motion, simple-pendulum, energy-and-work,
- * electric-circuits, waves-and-sound, optics-light, atomic-structure, chemical-bonding,
+ * Topic slugs available: newtons-laws-of-motion, simple-pendulum, work-energy-theorem,
+ * electric-circuits, waves-and-sound, refraction-and-snells-law, atomic-structure, chemical-bonding,
  * states-of-matter, quadratic-equations, trigonometry-basics, probability-basics,
  * photosynthesis, cell-biology, human-circulatory-system, genetics-basics,
  * ecology-and-ecosystems, computer-hardware-basics, programming-algorithms, simple-machines.
@@ -108,7 +108,7 @@ export const labExperimentSeeds: Experiment[] = [
     slug: 'rainbow-refraction-light',
     title: 'Make a rainbow with water and light',
     subject: 'physics',
-    topic: 'optics-light',
+    topic: 'refraction-and-snells-law',
     level: 'beginner',
     supervision: 'none',
     objective:

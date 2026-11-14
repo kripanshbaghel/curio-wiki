@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { getExperiment } from '@/content/experiments';
 import { getCollection, collections } from '@/content/collections';
-import { getTopic, topics } from '@/content/topics';
+import { getTopic } from '@/content/topics';
 import { Badge } from '@/components/ui/badge';
 import { Card } from '@/components/ui/card';
 import { Container } from '@/components/ui/container';
@@ -33,9 +33,9 @@ export default async function TopicPage({ params }: Props) {
   const topicCollections = topic.collectionSlugs
     .map((collectionSlug) => collections.find((collection) => collection.slug === collectionSlug) ?? getCollection(collectionSlug))
     .filter((collection) => collection !== undefined);
-  const relatedTopics = topics.filter(
-    (other) => other.slug !== topic.slug && other.subject === topic.subject,
-  );
+  const relatedTopics = topic.relatedSlugs
+    .map((slug) => getTopic(slug))
+    .filter((other) => other !== undefined);
 
   return (
     <Container className="flex flex-col gap-10 py-10">
@@ -99,7 +99,7 @@ export default async function TopicPage({ params }: Props) {
 
       {relatedTopics.length > 0 ? (
         <section>
-          <SectionHeader title={`More in ${topic.subject}`} />
+          <SectionHeader title="Related topics" />
           <ul className="flex flex-wrap gap-2">
             {relatedTopics.map((other) => (
               <li key={other.slug}>
@@ -144,6 +144,30 @@ export default async function TopicPage({ params }: Props) {
           Wikipedia: {topic.wikipediaTitle}
         </a>
       </section>
+
+      {topic.sources && topic.sources.length > 0 ? (
+        <section>
+          <SectionHeader title="Sources" />
+          <p className="mb-3 text-sm text-muted-foreground">
+            This curated summary is written in line with the references below. It is not a copy of
+            these sources.
+          </p>
+          <ul className="flex flex-col gap-1">
+            {topic.sources.map((source) => (
+              <li key={source.url}>
+                <a
+                  href={source.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-sm text-primary underline-offset-2 hover:underline"
+                >
+                  {source.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </section>
+      ) : null}
 
       <WikipediaPanel wikipediaTitle={topic.wikipediaTitle} />
     </Container>

@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { isCategoryForSubject } from './categories';
 import { SUBJECT_KEYS } from './types';
 
 const slugPattern = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
@@ -100,32 +101,46 @@ export const experimentSchema = z
     }
   });
 
-export const topicSchema = z.object({
-  slug: slugSchema,
-  title: text(120),
-  subject: subjectSchema,
-  summary: text(400),
-  aliases: z.array(z.string().trim().min(1)).max(10),
-  keyConcepts: z
-    .array(z.object({ term: text(80), definition: text(400) }))
-    .min(1)
-    .max(12),
-  equations: z
-    .array(
-      z.object({
-        label: text(120),
-        latex: text(300),
-        variables: z.array(z.object({ symbol: text(20), meaning: text(80) })).max(12),
-      }),
-    )
-    .max(8),
-  relatedExperimentSlugs: z.array(slugSchema).max(12),
-  wikipediaTitle: text(200).refine(
-    (v) => !v.includes('://') && !v.includes('/'),
-    { message: 'must be a Wikipedia article title, not a URL or path' },
-  ),
-  collectionSlugs: z.array(slugSchema).max(12),
-});
+export const topicSchema = z
+  .object({
+    slug: slugSchema,
+    title: text(120),
+    subject: subjectSchema,
+    category: slugSchema,
+    summary: text(400),
+    aliases: z.array(z.string().trim().min(1)).max(10),
+    keyConcepts: z
+      .array(z.object({ term: text(80), definition: text(400) }))
+      .min(1)
+      .max(12),
+    equations: z
+      .array(
+        z.object({
+          label: text(120),
+          latex: text(300),
+          variables: z.array(z.object({ symbol: text(20), meaning: text(80) })).max(12),
+        }),
+      )
+      .max(8),
+    relatedExperimentSlugs: z.array(slugSchema).max(12),
+    relatedSlugs: z.array(slugSchema).max(12),
+    wikipediaTitle: text(200).refine(
+      (v) => !v.includes('://') && !v.includes('/'),
+      { message: 'must be a Wikipedia article title, not a URL or path' },
+    ),
+    collectionSlugs: z.array(slugSchema).max(12),
+    difficulty: z.enum(['beginner', 'intermediate', 'advanced']).optional(),
+    sources: z.array(sourceLinkSchema).min(1).max(6).optional(),
+  })
+  .superRefine((topic, ctx) => {
+    if (!isCategoryForSubject(topic.subject, topic.category)) {
+      ctx.addIssue({
+        code: 'custom',
+        path: ['category'],
+        message: `"${topic.category}" is not a ${topic.subject} category`,
+      });
+    }
+  });
 
 export const subjectSchemaRecord = z.object({
   slug: subjectSchema,

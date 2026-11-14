@@ -26,6 +26,7 @@ const validTopic: Topic = {
   slug: 'newtons-second-law',
   title: "Newton's second law",
   subject: 'physics',
+  category: 'mechanics',
   summary: 'The acceleration of an object is proportional to the net force acting on it.',
   aliases: ['F = ma', 'second law of motion'],
   keyConcepts: [{ term: 'Net force', definition: 'Vector sum of all forces on an object.' }],
@@ -41,6 +42,7 @@ const validTopic: Topic = {
     },
   ],
   relatedExperimentSlugs: ['inclined-plane'],
+  relatedSlugs: ['simple-pendulum'],
   wikipediaTitle: "Newton's laws of motion",
   collectionSlugs: ['forces-and-motion'],
 };
@@ -90,6 +92,47 @@ describe('content schema safety and validation', () => {
     expect(topicSchema.safeParse(validTopic).success).toBe(true);
   });
 
+  it('rejects a category outside the subject taxonomy', () => {
+    const result = topicSchema.safeParse({
+      ...validTopic,
+      subject: 'physics',
+      category: 'organic-chemistry',
+    });
+    expect(result.success).toBe(false);
+  });
+
+  it('requires category and relatedSlugs on every topic', () => {
+    expect(topicSchema.safeParse({ ...validTopic, category: undefined }).success).toBe(false);
+    expect(topicSchema.safeParse({ ...validTopic, relatedSlugs: undefined }).success).toBe(false);
+  });
+
+  it('rejects malformed related topic slugs', () => {
+    expect(
+      topicSchema.safeParse({ ...validTopic, relatedSlugs: ['Not A Slug'] }).success,
+    ).toBe(false);
+  });
+
+  it('accepts optional difficulty and reputable sources', () => {
+    const parsed = topicSchema.safeParse({
+      ...validTopic,
+      difficulty: 'advanced',
+      sources: [
+        { label: 'Newton’s laws of motion — Wikipedia', url: 'https://en.wikipedia.org/wiki/Newton%27s_laws_of_motion' },
+        { label: 'OpenStax University Physics', url: 'https://openstax.org/books/university-physics-volume-1' },
+      ],
+    });
+    expect(parsed.success).toBe(true);
+  });
+
+  it('rejects javascript: sources on topics', () => {
+    expect(
+      topicSchema.safeParse({
+        ...validTopic,
+        sources: [{ label: 'bad', url: 'javascript:alert(1)' }],
+      }).success,
+    ).toBe(false);
+  });
+
   it('parseContent aggregates multiple errors', () => {
     const schema = experimentSchema.array();
     const broken = [
@@ -124,6 +167,33 @@ describe('curated content catalog', () => {
     expect(topics.length).toBeGreaterThanOrEqual(18);
     const slugs = topics.map((topic) => topic.slug);
     expect(new Set(slugs).size).toBe(slugs.length);
+  });
+
+  it('has globally unique titles and aliases (case-insensitive)', () => {
+    const titles = topics.map((topic) => topic.title.toLowerCase());
+    expect(new Set(titles).size).toBe(titles.length);
+    const aliases = topics.flatMap((topic) => topic.aliases.map((alias) => alias.toLowerCase()));
+    expect(new Set(aliases).size).toBe(aliases.length);
+  });
+
+  it('every relatedSlug resolves to a topic', () => {
+    const slugs = new Set(topics.map((topic) => topic.slug));
+    for (const topic of topics) {
+      for (const related of topic.relatedSlugs) {
+        expect(slugs.has(related), `${topic.slug} → ${related}`).toBe(true);
+      }
+      expect(topic.relatedSlugs).not.toContain(topic.slug);
+    }
+  });
+
+  it('every topic carries sourced attribution', () => {
+    for (const topic of topics) {
+      expect(topic.sources && topic.sources.length, topic.slug).toBeGreaterThan(0);
+      const wikipedia = topic.sources!.filter((source) => source.url.includes('wikipedia.org'));
+      expect(wikipedia.length, `${topic.slug} needs a Wikipedia source`).toBeGreaterThan(0);
+      const other = topic.sources!.filter((source) => !source.url.includes('wikipedia.org'));
+      expect(other.length, `${topic.slug} needs a non-Wikipedia reference`).toBeGreaterThan(0);
+    }
   });
 
   it('has at least 15 experiments with unique slugs', () => {

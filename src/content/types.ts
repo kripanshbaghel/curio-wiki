@@ -41,17 +41,26 @@ export interface Equation {
   variables: EquationVariable[];
 }
 
+export type TopicDifficulty = 'beginner' | 'intermediate' | 'advanced';
+
 export interface Topic {
   slug: string;
   title: string;
   subject: SubjectKey;
+  /** Category slug from the subject's taxonomy (see `categories.ts`). */
+  category: string;
   summary: string;
   aliases: string[];
   keyConcepts: KeyConcept[];
   equations: Equation[];
   relatedExperimentSlugs: string[];
+  /** Slugs of related curated topics; validated to resolve at load time. */
+  relatedSlugs: string[];
   wikipediaTitle: string;
   collectionSlugs: string[];
+  difficulty?: TopicDifficulty;
+  /** Reputable references backing the topic's factual description. */
+  sources?: SourceLink[];
 }
 
 export type ExperimentLevel = 'beginner' | 'intermediate' | 'advanced';

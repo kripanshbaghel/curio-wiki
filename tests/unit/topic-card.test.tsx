@@ -10,11 +10,13 @@ describe('TopicCard', () => {
           slug: 'photosynthesis',
           title: 'Photosynthesis',
           subject: 'biology',
+          category: 'plants',
           summary: 'How plants turn light into sugar.',
           aliases: [],
           keyConcepts: [],
           equations: [],
           relatedExperimentSlugs: [],
+          relatedSlugs: [],
           wikipediaTitle: 'Photosynthesis',
           collectionSlugs: [],
         }}

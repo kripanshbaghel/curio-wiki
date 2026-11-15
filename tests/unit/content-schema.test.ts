@@ -209,6 +209,19 @@ describe('curated content catalog', () => {
     }
   });
 
+  it('has at least 50 mathematics topics', () => {
+    expect(topics.filter((topic) => topic.subject === 'mathematics').length).toBeGreaterThanOrEqual(50);
+  });
+
+  it('covers every mathematics category with at least one topic', () => {
+    for (const category of SUBJECT_CATEGORIES.mathematics) {
+      expect(
+        topics.some((topic) => topic.subject === 'mathematics' && topic.category === category),
+        category,
+      ).toBe(true);
+    }
+  });
+
   it('has globally unique titles and aliases (case-insensitive)', () => {
     const titles = topics.map((topic) => topic.title.toLowerCase());
     expect(new Set(titles).size).toBe(titles.length);

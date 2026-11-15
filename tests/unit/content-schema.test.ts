@@ -222,6 +222,19 @@ describe('curated content catalog', () => {
     }
   });
 
+  it('has at least 50 technology topics', () => {
+    expect(topics.filter((topic) => topic.subject === 'technology').length).toBeGreaterThanOrEqual(50);
+  });
+
+  it('covers every technology category with at least one topic', () => {
+    for (const category of SUBJECT_CATEGORIES.technology) {
+      expect(
+        topics.some((topic) => topic.subject === 'technology' && topic.category === category),
+        category,
+      ).toBe(true);
+    }
+  });
+
   it('has globally unique titles and aliases (case-insensitive)', () => {
     const titles = topics.map((topic) => topic.title.toLowerCase());
     expect(new Set(titles).size).toBe(titles.length);

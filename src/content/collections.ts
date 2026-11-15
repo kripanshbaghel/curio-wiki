@@ -42,7 +42,7 @@ const rawCollections: unknown[] = [
     title: 'Living systems',
     description:
       'From cells and DNA to circulatory systems and ecosystems — the ideas that explain how living things are built and how they interact.',
-    topicSlugs: ['cell-biology', 'genetics-basics', 'human-circulatory-system', 'ecology-and-ecosystems'],
+    topicSlugs: ['cell-biology', 'genetics-basics', 'photosynthesis', 'human-circulatory-system', 'ecology-and-ecosystems'],
   },
   {
     slug: 'technology-and-design',

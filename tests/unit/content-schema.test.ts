@@ -196,6 +196,19 @@ describe('curated content catalog', () => {
     }
   });
 
+  it('has at least 50 biology topics', () => {
+    expect(topics.filter((topic) => topic.subject === 'biology').length).toBeGreaterThanOrEqual(50);
+  });
+
+  it('covers every biology category with at least one topic', () => {
+    for (const category of SUBJECT_CATEGORIES.biology) {
+      expect(
+        topics.some((topic) => topic.subject === 'biology' && topic.category === category),
+        category,
+      ).toBe(true);
+    }
+  });
+
   it('has globally unique titles and aliases (case-insensitive)', () => {
     const titles = topics.map((topic) => topic.title.toLowerCase());
     expect(new Set(titles).size).toBe(titles.length);

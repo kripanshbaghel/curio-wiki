@@ -10,6 +10,7 @@ import { Container } from '@/components/ui/container';
 import { SectionHeader } from '@/components/ui/section-header';
 import { ConceptList } from '@/components/topic/concept-list';
 import { EquationBlock } from '@/components/topic/equation-block';
+import { VisualizerCallout } from '@/components/topic/visualizer-callout';
 import { WikipediaPanel } from '@/components/topic/wikipedia-panel';
 
 interface Props {
@@ -46,6 +47,8 @@ export default async function TopicPage({ params }: Props) {
         <h1 className="text-3xl font-semibold tracking-tight text-foreground">{topic.title}</h1>
         <p className="max-w-3xl text-muted-foreground">{topic.summary}</p>
       </header>
+
+      <VisualizerCallout topicSlug={topic.slug} />
 
       {topic.keyConcepts.length > 0 ? (
         <section>

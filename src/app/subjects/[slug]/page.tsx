@@ -5,11 +5,13 @@ import { SUBJECT_CATEGORIES } from '@/content/categories';
 import { experiments } from '@/content/experiments';
 import { getSubject } from '@/content/subjects';
 import { getTopicsPage, TOPIC_PAGE_SIZE } from '@/content/topics';
+import { visualizersBySubject } from '@/content/visualizers';
 import { Badge } from '@/components/ui/badge';
 import { Card } from '@/components/ui/card';
 import { Container } from '@/components/ui/container';
 import { EmptyState } from '@/components/ui/empty-state';
 import { Pagination } from '@/components/ui/pagination';
+import { SearchBox } from '@/components/layout/search-box';
 import { SectionHeader } from '@/components/ui/section-header';
 import { TopicCard } from '@/components/topic/topic-card';
 import { TopicFilterBar, topicsHref } from '@/components/topic/topic-filter-bar';
@@ -52,12 +54,50 @@ export default async function SubjectPage({ params, searchParams }: Props) {
     (experiment) => experiment.subject === subject.slug && experiment.featured,
   );
 
+  const subjectVisualizers = visualizersBySubject(subject.slug);
+
   return (
     <Container className="flex flex-col gap-10 py-10">
       <header className="max-w-3xl">
         <h1 className="text-3xl font-semibold tracking-tight text-foreground">{subject.name}</h1>
         <p className="mt-2 text-muted-foreground">{subject.description}</p>
       </header>
+
+      <SearchBox size="compact" />
+
+      {subjectVisualizers.length > 0 ? (
+        <section
+          aria-labelledby="subject-visualizers"
+          className="rounded-card border border-border bg-surface p-5"
+        >
+          <div className="flex flex-wrap items-baseline justify-between gap-2">
+            <h2 id="subject-visualizers" className="text-sm font-semibold text-foreground">
+              Interactive visualizers
+            </h2>
+            <Link
+              href={`/visualizers/${subject.slug}`}
+              className="text-xs font-medium text-primary underline-offset-4 hover:underline"
+            >
+              Open the {subject.name.toLowerCase()} bench
+            </Link>
+          </div>
+          <ul className="mt-3 grid gap-x-8 gap-y-1 sm:grid-cols-2 lg:grid-cols-3">
+            {subjectVisualizers.map((entry) => (
+              <li key={entry.slug}>
+                <Link
+                  href={`/visualizers/${entry.subject}/${entry.slug}`}
+                  className="flex items-baseline justify-between gap-2 border-b border-border/60 py-1.5 text-sm text-foreground hover:text-primary"
+                >
+                  <span className="min-w-0">{entry.title}</span>
+                  <span aria-hidden className="text-xs text-muted-foreground">
+                    →
+                  </span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </section>
+      ) : null}
 
       <section className="flex flex-col gap-5">
         <SectionHeader

@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { BookOpen } from 'lucide-react';
 import type { WikipediaSearchItem, WikipediaSummary } from '@/lib/adapters/wikipedia';
@@ -37,6 +38,27 @@ function invalidMessage(reason: NonNullable<SearchResponse['invalid']>): { title
 export function SearchResults({ initial }: { initial: SearchResponse }) {
   const [overrides, setOverrides] = useState<Partial<Record<NetworkId, SourceResult<unknown>>>>({});
   const [retrying, setRetrying] = useState<NetworkId | null>(null);
+  const router = useRouter();
+
+  async function learnFromWikipedia(item: WikipediaSearchItem) {
+    const sessionId = `research-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+    try {
+      await fetch('/api/research/store', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          sessionId,
+          data: {
+            query: item.title,
+            wikipedia: [item],
+          },
+        }),
+      });
+    } catch {
+      // Ignore store errors — the learning page will still work with live data.
+    }
+    router.push(`/learn/${sessionId}`);
+  }
 
   async function retry(id: NetworkId) {
     if (!initial.query) return;
@@ -201,22 +223,46 @@ export function SearchResults({ initial }: { initial: SearchResponse }) {
                 <ul className="flex flex-col gap-2">
                   {items.map((item) => (
                     <li key={item.key}>
-                      <a
-                        href={item.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="block rounded-card border border-border bg-surface p-4 shadow-card transition-colors hover:border-primary/40"
-                      >
-                        <span className="flex items-center gap-2 text-sm font-medium text-foreground">
-                          <BookOpen aria-hidden className="size-4 shrink-0 text-muted-foreground" />
-                          {item.title}
-                        </span>
-                        {item.excerpt ? (
-                          <span className="mt-1 line-clamp-2 block text-sm text-muted-foreground">
-                            {item.excerpt}
+                      <div className="flex items-start gap-2">
+                        <a
+                          href={item.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="block rounded-card border border-border bg-surface p-4 shadow-card transition-colors hover:border-primary/40 flex-1"
+                        >
+                          <span className="flex items-center gap-2 text-sm font-medium text-foreground">
+                            <BookOpen aria-hidden className="size-4 shrink-0 text-muted-foreground" />
+                            {item.title}
                           </span>
-                        ) : null}
-                      </a>
+                          {item.excerpt ? (
+                            <span className="mt-1 line-clamp-2 block text-sm text-muted-foreground">
+                              {item.excerpt}
+                            </span>
+                          ) : null}
+                        </a>
+                        <button
+                          onClick={() => void learnFromWikipedia(item)}
+                          aria-label={`Learn about ${item.title} on CurioWiki`}
+                          className="shrink-0 rounded p-1.5 text-muted-foreground hover:bg-surface-muted hover:text-foreground"
+                        >
+                          <span className="sr-only">Learn on CurioWiki</span>
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="16"
+                            height="16"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            className="size-4"
+                          >
+                            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+                            <polyline points="9 22 9 12 15 12 15 22" />
+                          </svg>
+                        </button>
+                      </div>
                     </li>
                   ))}
                 </ul>

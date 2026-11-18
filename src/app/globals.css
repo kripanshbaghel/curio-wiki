@@ -35,6 +35,23 @@
   --c-mathematics: #b45309;
   --c-technology: #0f766e;
   --c-engineering: #be123c;
+
+  /*
+   * Instrument stage. Deliberately dark in both themes: a display surface,
+   * not a content card. Canvas mirrors these in core/palette.ts.
+   */
+  --viz-stage: #0d121b;
+  --viz-stage-raised: #141b26;
+  --viz-ink: #e8edf7;
+  --viz-muted: #93a0b5;
+  --viz-grid: rgb(200 215 240 / 0.08);
+  --viz-hairline: rgb(200 215 240 / 0.16);
+  --viz-physics: #7aa7ff;
+  --viz-chemistry: #b79cff;
+  --viz-biology: #6ee7a0;
+  --viz-mathematics: #f6c453;
+  --viz-technology: #4fe0c8;
+  --viz-engineering: #ff8fa3;
 }
 
 .dark {
@@ -61,6 +78,9 @@
   --c-mathematics: #fbbf24;
   --c-technology: #2dd4bf;
   --c-engineering: #fb7185;
+
+  --viz-stage: #090d14;
+  --viz-stage-raised: #111827;
 }
 
 @theme {
@@ -93,6 +113,19 @@
   --color-mathematics: var(--c-mathematics);
   --color-technology: var(--c-technology);
   --color-engineering: var(--c-engineering);
+
+  --color-viz-stage: var(--viz-stage);
+  --color-viz-stage-raised: var(--viz-stage-raised);
+  --color-viz-ink: var(--viz-ink);
+  --color-viz-muted: var(--viz-muted);
+  --color-viz-grid: var(--viz-grid);
+  --color-viz-hairline: var(--viz-hairline);
+  --color-viz-physics: var(--viz-physics);
+  --color-viz-chemistry: var(--viz-chemistry);
+  --color-viz-biology: var(--viz-biology);
+  --color-viz-mathematics: var(--viz-mathematics);
+  --color-viz-technology: var(--viz-technology);
+  --color-viz-engineering: var(--viz-engineering);
 }
 
 @layer base {
@@ -118,4 +151,110 @@
 /* Equal-height grid items: cards stretch inside their grid track. */
 @utility equal-cards {
   grid-auto-rows: 1fr;
+}
+
+@utility numeric {
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.01em;
+}
+
+/* Instrument range: a measurement track, not a decorative gradient. */
+.viz-range {
+  appearance: none;
+  width: 100%;
+  height: 1.5rem;
+  background: transparent;
+  cursor: pointer;
+}
+
+.viz-range::-webkit-slider-runnable-track {
+  height: 4px;
+  border-radius: 999px;
+  background: linear-gradient(
+    to right,
+    var(--primary) 0 var(--viz-progress, 50%),
+    var(--border) var(--viz-progress, 50%) 100%
+  );
+}
+
+.viz-range::-moz-range-track {
+  height: 4px;
+  border-radius: 999px;
+  background: var(--border);
+}
+
+.viz-range::-moz-range-progress {
+  height: 4px;
+  border-radius: 999px;
+  background: var(--primary);
+}
+
+.viz-range::-webkit-slider-thumb {
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  margin-top: -6px;
+  border-radius: 999px;
+  border: 2px solid var(--primary);
+  background: var(--surface);
+  box-shadow: 0 1px 4px rgb(16 18 25 / 0.25);
+}
+
+.viz-range::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  border-radius: 999px;
+  border: 2px solid var(--primary);
+  background: var(--surface);
+}
+
+.viz-range:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.viz-stage:fullscreen {
+  border: 0;
+  border-radius: 0;
+  padding: 1.5rem;
+  background: var(--viz-stage);
+}
+
+.viz-stage:fullscreen canvas {
+  height: calc(100vh - 3rem);
+  width: 100%;
+}
+
+[data-viz-canvas]:fullscreen {
+  aspect-ratio: auto !important;
+  width: 100vw;
+  height: 100vh;
+  background: var(--viz-stage);
+}
+
+.viz-enter {
+  animation: viz-enter 420ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes viz-enter {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .viz-enter,
+  .viz-stage canvas {
+    animation: none !important;
+    transition: none !important;
+  }
 }

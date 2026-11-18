@@ -268,9 +268,9 @@ describe('curated content catalog', () => {
     expect(new Set(slugs).size).toBe(slugs.length);
   });
 
-  it('has 5–6 collections with unique slugs', () => {
+  it('has 5–7 collections with unique slugs', () => {
     expect(collections.length).toBeGreaterThanOrEqual(5);
-    expect(collections.length).toBeLessThanOrEqual(6);
+    expect(collections.length).toBeLessThanOrEqual(7);
     const slugs = collections.map((collection) => collection.slug);
     expect(new Set(slugs).size).toBe(slugs.length);
   });

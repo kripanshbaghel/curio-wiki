@@ -488,4 +488,424 @@ export const handsOnExperimentSeeds: Experiment[] = [
     ],
     featured: false,
   },
+  {
+    slug: 'paper-glider-lift',
+    title: 'Paper glider lift test',
+    subject: 'engineering',
+    topic: 'airfoil-wing',
+    level: 'beginner',
+    supervision: 'none',
+    objective:
+      'Build paper gliders with different wing shapes and measure how far they fly to see how wing design affects lift.',
+    concept:
+      'A wing generates lift by deflecting air downward, creating an upward reaction force. Wing shape, especially curvature and aspect ratio, changes how efficiently lift is produced for a given speed.',
+    materials: [
+      'A4 or letter paper',
+      'Ruler',
+      'Pencil',
+      'Scissors',
+      'Tape',
+      'Marker pen',
+      'Large open indoor space or calm outdoor area',
+      'Tape measure or measuring tape',
+    ],
+    procedure: [
+      'Fold a standard paper glider using a symmetric wing shape.',
+      'Mark a starting line on the floor and stand with your toes behind it.',
+      'Throw the glider with a consistent, gentle forward motion.',
+      'Measure the distance from the starting line to where the glider first lands.',
+      'Repeat three times with the same design and record the average distance.',
+      'Fold a second glider with a different wing shape (e.g. narrower or wider wings) using the same paper.',
+      'Throw the second glider three times using the same technique and record the average distance.',
+      'Compare the two averages and describe which wing shape flew farther.',
+    ],
+    observations: [
+      'Record the landing distance for every throw in a table.',
+      'Note whether each glider flew straight, turned, or stalled.',
+      'Compare the average distances between the two wing shapes.',
+    ],
+    explanation:
+      'Lift is created when the wing pushes air down and the air pushes the wing up. A well-shaped wing produces more lift for less drag, so the glider stays airborne longer and travels farther. Changing wing width or curvature alters the airflow pattern, which is why some designs fly farther than others. Real aircraft wings use the same principle, with carefully tested shapes for different flight conditions.',
+    safety: [
+      'Throw gently so the glider does not hit anyone.',
+      'Make sure the throwing area is clear of people and breakable objects.',
+      'Do not throw paper gliders toward faces or eyes.',
+    ],
+    durationMinutes: 20,
+    relatedVideoQueries: [
+      'paper airplane flight distance experiment',
+      'how wings generate lift',
+      'paper glider aerodynamics for kids',
+    ],
+    sources: [
+      {
+        label: 'Wikipedia: Lift (force)',
+        url: 'https://en.wikipedia.org/wiki/Lift_(force)',
+      },
+      {
+        label: 'Wikipedia: Airfoil',
+        url: 'https://en.wikipedia.org/wiki/Airfoil',
+      },
+    ],
+    featured: false,
+  },
+  {
+    slug: 'popsicle-stick-truss-bridge',
+    title: 'Popsicle stick truss bridge',
+    subject: 'engineering',
+    topic: 'warren-truss-bridge',
+    level: 'beginner',
+    supervision: 'none',
+    objective:
+      'Build a small bridge from popsicle sticks arranged in triangular trusses, then test how much weight it holds before failing.',
+    concept:
+      'Triangles are rigid shapes that resist deformation. A truss bridge spreads the load through its members so each stick works mainly in tension or compression rather than bending.',
+    materials: [
+      'Popsicle sticks (about 50)',
+      'Wood glue or strong craft glue',
+      'Two stacks of books or blocks',
+      'Small coins or washers',
+      'Small cup or cardboard tray',
+      'Ruler',
+      'Clothespins or binder clips (optional)',
+    ],
+    procedure: [
+      'Place the two support stacks about 25 cm apart.',
+      'Glue popsicle sticks side by side to make a flat bridge deck.',
+      'Glue sticks underneath the deck in triangular patterns to form trusses.',
+      'Let the glue dry fully before testing.',
+      'Lay the bridge across the gap between the supports.',
+      'Place the cup in the centre of the deck to hold the load.',
+      'Add coins one at a time until the bridge bends or breaks.',
+      'Record how many coins the bridge held.',
+    ],
+    observations: [
+      'Record the number of coins held before failure.',
+      'Describe where the bridge failed first: a joint, a stick, or the centre span.',
+      'Note whether the deck sagged, twisted, or snapped.',
+    ],
+    explanation:
+      'The load on the bridge creates bending forces, strongest at the centre of the span. Triangles in the truss convert much of that bending into forces along the sticks themselves: the top sticks are squeezed (compression) while the bottom ones are stretched (tension). Because triangles cannot change shape without changing side lengths, the truss stays rigid. More sticks and deeper trusses share the load better, so the bridge carries more weight before a stick buckles or a joint fails.',
+    safety: [
+      'Coins are a choking hazard for younger children — keep them counted and out of reach of mouths.',
+      'Clear glue drips and stick fragments from the floor after testing.',
+      'Build the bridge low to the bench so a collapse cannot land on anyone\'s feet.',
+      'Use craft glue, not super glue, to avoid skin bonding.',
+    ],
+    durationMinutes: 40,
+    relatedVideoQueries: [
+      'popsicle stick bridge strength test',
+      'truss bridge engineering challenge',
+      'how triangles make bridges strong',
+    ],
+    sources: [
+      {
+        label: 'Wikipedia: Truss',
+        url: 'https://en.wikipedia.org/wiki/Truss',
+      },
+      {
+        label: 'Wikipedia: Truss bridge',
+        url: 'https://en.wikipedia.org/wiki/Truss_bridge',
+      },
+    ],
+    featured: false,
+  },
+  {
+    slug: 'simple-dc-motor',
+    title: 'Simple DC motor',
+    subject: 'engineering',
+    topic: 'electric-motor',
+    level: 'intermediate',
+    supervision: 'adult-required',
+    objective:
+      'Build a minimal DC motor using a battery, magnet, and coil of wire, then observe how the coil spins when current flows.',
+    concept:
+      'A current-carrying wire in a magnetic field experiences a force. In a coil, forces on opposite sides create torque that makes the coil rotate. A commutator reverses the current each half-turn to keep the coil spinning in one direction.',
+    materials: [
+      'AA battery',
+      'Strong magnet (e.g. neodymium)',
+      'Insulated copper wire (about 1 metre)',
+      'Two large paper clips',
+      'Rubber band',
+      'Sandpaper',
+      'Small piece of cardboard or foam',
+      'Tape',
+    ],
+    procedure: [
+      'Wrap the copper wire around the battery about 10 times to make a coil, leaving straight leads at each end.',
+      'Carefully slide the coil off the battery and tape the leads to keep the coil shape.',
+      'Sand the insulation off one lead completely, and sand only half the insulation off the other lead.',
+      'Straighten the paper clips and tape them to the battery terminals to make electrical contacts.',
+      'Place the magnet under the coil.',
+      'Rest the coil leads on the paper clip contacts so the coil sits above the magnet.',
+      'Give the coil a gentle spin and watch whether it keeps rotating.',
+    ],
+    observations: [
+      'Note whether the coil spins continuously or only briefly.',
+      'Observe which direction the coil spins.',
+      'Try reversing the magnet or battery leads and note any change.',
+    ],
+    explanation:
+      'When current flows through the coil in the magnetic field, each side of the coil experiences a force in opposite directions, creating torque that rotates the coil. Halfway through a turn, the sanded insulation pattern briefly breaks the circuit, and the coil\'s inertia carries it past the dead spot. Contact is restored with current flowing the other way, so the torque continues in the same direction and the coil keeps spinning.',
+    safety: [
+      'Adult supervision required for handling magnets and sharp wire ends.',
+      'Keep magnets away from electronics, phones, and bank cards.',
+      'Do not leave the coil connected to the battery for long periods — the wire and battery can overheat.',
+      'Disconnect the battery when not actively testing.',
+    ],
+    durationMinutes: 30,
+    relatedVideoQueries: [
+      'simple DC motor homopolar experiment',
+      'how electric motors work',
+      'battery magnet wire motor demonstration',
+    ],
+    sources: [
+      {
+        label: 'Wikipedia: Electric motor',
+        url: 'https://en.wikipedia.org/wiki/Electric_motor',
+      },
+      {
+        label: 'Wikipedia: Electromagnetism',
+        url: 'https://en.wikipedia.org/wiki/Electromagnetism',
+      },
+    ],
+    featured: false,
+  },
+  {
+    slug: 'water-wheel-power',
+    title: 'Water wheel power test',
+    subject: 'engineering',
+    topic: 'steam-turbine',
+    level: 'beginner',
+    supervision: 'none',
+    objective:
+      'Build a simple water wheel from household materials and measure how falling water makes it turn, demonstrating fluid power.',
+    concept:
+      'Moving water carries kinetic energy. When water strikes the blades of a wheel, it transfers momentum and makes the wheel rotate. The height and flow rate of the water determine how much power is available.',
+    materials: [
+      'Disposable plate or stiff cardboard',
+      'Plastic bottle or paper cups',
+      'Wooden skewer or pencil',
+      'Waterproof tape',
+      'Scissors',
+      'Jug or bucket of water',
+      'Sink, bathtub, or outdoor area',
+      'Stopwatch',
+    ],
+    procedure: [
+      'Cut six to eight blades from the plate or cardboard.',
+      'Attach the blades evenly around the edge of a circular base made from the bottle or card.',
+      'Push the skewer through the centre of the wheel as an axle.',
+      'Support the axle so the wheel can spin freely, with the bottom blades dipping into flowing water.',
+      'Pour water from the jug onto the top blades and watch the wheel turn.',
+      'Time how long it takes for the wheel to make 10 rotations.',
+      'Repeat with water poured from a greater height and compare the speed.',
+    ],
+    observations: [
+      'Record the time for 10 rotations at each water height.',
+      'Describe whether pouring from higher makes the wheel spin faster.',
+      'Note where the water hits the blades most effectively.',
+    ],
+    explanation:
+      'Water falling from a height has gravitational potential energy that converts to kinetic energy as it accelerates. When the water strikes the wheel blades, it pushes them in the direction of flow, creating torque on the axle. Water from a greater height arrives faster and carries more energy, so the wheel spins more quickly. This is the same principle as water wheels and steam turbines used to generate mechanical power.',
+    safety: [
+      'Use the experiment near a sink, bathtub, or outdoors where water spills are safe.',
+      'Wipe up spills immediately so floors do not become slippery.',
+      'Do not use near electrical outlets or appliances.',
+    ],
+    durationMinutes: 25,
+    relatedVideoQueries: [
+      'water wheel experiment for kids',
+      'how water turbines work',
+      'hydropower demonstration household materials',
+    ],
+    sources: [
+      {
+        label: 'Wikipedia: Water wheel',
+        url: 'https://en.wikipedia.org/wiki/Water_wheel',
+      },
+      {
+        label: 'Wikipedia: Turbine',
+        url: 'https://en.wikipedia.org/wiki/Turbine',
+      },
+    ],
+    featured: false,
+  },
+  {
+    slug: 'breadboard-series-circuit',
+    title: 'Breadboard series circuit',
+    subject: 'engineering',
+    topic: 'series-dc-circuit',
+    level: 'beginner',
+    supervision: 'none',
+    objective:
+      'Build a series circuit on a breadboard with a battery, switch, and two LEDs, then measure how the voltage divides across the components.',
+    concept:
+      'In a series circuit there is only one path for current, so the same current flows through every component. The supply voltage is shared between components in proportion to their resistance.',
+    materials: [
+      'Breadboard',
+      'AA battery pack with two AA cells only',
+      'Two LEDs of different colours',
+      'Two resistors (220 ohm to 470 ohm)',
+      'Jumper wires',
+      'Optional: multimeter',
+    ],
+    procedure: [
+      'Check the battery pack uses AA cells only — never connect to household mains.',
+      'Insert the battery pack wires into the breadboard power rails.',
+      'Place the first resistor, LED, second resistor, and second LED in a single row on the breadboard.',
+      'Connect jumper wires to make one continuous loop from battery positive through all components back to battery negative.',
+      'Connect the battery and observe whether both LEDs light.',
+      'If you have a multimeter, measure the voltage across each component.',
+      'Disconnect the battery when finished.',
+    ],
+    observations: [
+      'Note whether both LEDs light and how brightly they glow.',
+      'Record the voltage across each resistor and LED if using a multimeter.',
+      'Compare whether the voltages add up to the battery voltage.',
+    ],
+    explanation:
+      'In a series circuit the current is the same everywhere because there is only one path. Each component causes a voltage drop, and the sum of all drops equals the supply voltage. Components with larger resistance take a larger share of the voltage. If one LED is disconnected or burns out, the circuit breaks and both LEDs go out because there is no alternative path for current.',
+    safety: [
+      'Use AA battery packs only — household mains voltage is lethal.',
+      'If wires or the battery pack become warm, disconnect immediately.',
+      'Do not short the battery terminals directly with a wire.',
+      'Disconnect the battery when not in use.',
+    ],
+    durationMinutes: 20,
+    relatedVideoQueries: [
+      'series circuit breadboard LED experiment',
+      'voltage divider circuit for beginners',
+      'how series circuits work',
+    ],
+    sources: [
+      {
+        label: 'Wikipedia: Series and parallel circuits',
+        url: 'https://en.wikipedia.org/wiki/Series_and_parallel_circuits',
+      },
+      {
+        label: 'Wikipedia: Voltage divider',
+        url: 'https://en.wikipedia.org/wiki/Resistive_divider',
+      },
+    ],
+    featured: false,
+  },
+  {
+    slug: 'cantilever-beam-deflection',
+    title: 'Cantilever beam deflection test',
+    subject: 'engineering',
+    topic: 'cantilever-beam',
+    level: 'intermediate',
+    supervision: 'none',
+    objective:
+      'Clamp a ruler to a table edge, add known weights to the free end, and measure how much it bends to verify beam deflection behaviour.',
+    concept:
+      'A cantilever beam fixed at one end bends when a load is applied at the free end. The deflection increases with load and beam length, and decreases with beam stiffness and cross-sectional shape.',
+    materials: [
+      'Metre ruler or stiff wooden strip',
+      'G-clamp or heavy books',
+      'Table or bench',
+      'Small weights (coins or washers)',
+      'String or small bucket to hold weights',
+      'Ruler or millimetre graph paper',
+      'Marker pen or tape',
+    ],
+    procedure: [
+      'Clamp the ruler to the table edge so most of its length overhangs freely.',
+      'Mark the free end position with tape or a marker when unloaded.',
+      'Hang a small weight (e.g. five coins) from the free end.',
+      'Measure the vertical distance the end has moved from its unloaded position.',
+      'Record the weight and deflection.',
+      'Add more weights one at a time and measure deflection after each addition.',
+      'Remove the weights and confirm the ruler returns to its original position.',
+    ],
+    observations: [
+      'Record the weight added and the measured deflection for each step.',
+      'Plot deflection against weight and describe whether the relationship is linear.',
+      'Note whether the ruler returns to its starting position after unloading.',
+    ],
+    explanation:
+      'For a cantilever with a tip load, deflection is proportional to the load and to the cube of the beam length, and inversely proportional to the material stiffness and cross-section shape. Doubling the load doubles the deflection (within the elastic range). The ruler returns to its original position because the material is stressed below its elastic limit, so no permanent deformation occurs.',
+    safety: [
+      'Do not overload the ruler to the point where it snaps suddenly.',
+      'Wear eye protection in case a weight or ruler breaks.',
+      'Keep fingers clear of the clamp and falling weights.',
+      'Use small, gradually increasing weights rather than sudden loads.',
+    ],
+    durationMinutes: 30,
+    relatedVideoQueries: [
+      'cantilever beam deflection experiment',
+      'beam bending test ruler weights',
+      'how beams bend under load',
+    ],
+    sources: [
+      {
+        label: 'Wikipedia: Cantilever',
+        url: 'https://en.wikipedia.org/wiki/Cantilever',
+      },
+      {
+        label: 'Wikipedia: Beam (structure)',
+        url: 'https://en.wikipedia.org/wiki/Beam_(structure)',
+      },
+    ],
+    featured: false,
+  },
+  {
+    slug: 'fixed-pulley-lift',
+    title: 'Fixed pulley lift test',
+    subject: 'engineering',
+    topic: 'simple-machines',
+    level: 'beginner',
+    supervision: 'none',
+    objective:
+      'Use a fixed pulley to lift a load and measure the force needed compared with lifting the load directly.',
+    concept:
+      'A fixed pulley changes the direction of a force but does not reduce its magnitude. It lets you pull downward to lift a load upward, which is often more convenient than lifting directly.',
+    materials: [
+      'Fixed pulley or a smooth wheel on an axle',
+      'Strong string or thin rope',
+      'Small weight (e.g. a filled water bottle or bag of sand)',
+      'Spring scale or force meter (optional)',
+      'Table edge or beam to mount the pulley',
+      'Tape or clamp',
+    ],
+    procedure: [
+      'Mount the pulley at the edge of a table or beam so it can rotate freely.',
+      'Thread the string over the pulley, tying one end to the weight.',
+      'Hold the other end of the string and lift the weight by pulling downward.',
+      'Note how much effort it feels like compared with lifting the weight directly by hand.',
+      'If you have a spring scale, attach it to the free end and record the force reading.',
+      'Compare the scale reading with the known weight of the object.',
+    ],
+    observations: [
+      'Describe whether pulling downward feels easier than lifting directly, even if the force is the same.',
+      'Record the spring scale reading if available.',
+      'Note the direction of motion of the weight versus your pulling direction.',
+    ],
+    explanation:
+      'An ideal fixed pulley has a mechanical advantage of one: the input force equals the output force. Its benefit is changing the direction of effort — you can pull down using your body weight rather than lifting up. Real pulleys have some friction and rope weight, so the input force is slightly more than the load. Adding more pulleys in a block and tackle system can reduce the force needed, but at the cost of pulling more rope.',
+    safety: [
+      'Mount the pulley securely so it cannot fall.',
+      'Use weights that are light enough to handle safely.',
+      'Keep fingers away from the pulley wheel and string to avoid pinching.',
+      'Stand clear of the weight in case it slips.',
+    ],
+    durationMinutes: 20,
+    relatedVideoQueries: [
+      'fixed pulley mechanical advantage experiment',
+      'how pulleys work simple machine',
+      'pulley force direction demonstration',
+    ],
+    sources: [
+      {
+        label: 'Wikipedia: Pulley',
+        url: 'https://en.wikipedia.org/wiki/Pulley',
+      },
+      {
+        label: 'Wikipedia: Simple machine',
+        url: 'https://en.wikipedia.org/wiki/Simple_machine',
+      },
+    ],
+    featured: false,
+  },
 ];

@@ -33,6 +33,11 @@ export function SiteFooter() {
               </Link>
             </li>
             <li>
+              <Link href="/visualizers" className="hover:text-foreground">
+                Visualizers
+              </Link>
+            </li>
+            <li>
               <Link href="/videos" className="hover:text-foreground">
                 Videos
               </Link>

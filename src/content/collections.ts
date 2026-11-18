@@ -51,6 +51,24 @@ const rawCollections: unknown[] = [
       'How engineered and digital systems work: computer hardware, programming algorithms, simple machines, and electric circuits.',
     topicSlugs: ['computer-hardware-basics', 'programming-algorithms', 'simple-machines', 'electric-circuits'],
   },
+  {
+    slug: 'engineering-fundamentals',
+    title: 'Engineering fundamentals',
+    description:
+      'Core ideas across engineering: simple machines, circuits, structures, materials, flight, and the design process.',
+    topicSlugs: [
+      'simple-machines',
+      'internal-combustion-engine',
+      'electric-motor',
+      'electric-power-grid',
+      'reinforced-concrete',
+      'warren-truss-bridge',
+      'carbon-steel-alloy',
+      'airfoil-wing',
+      'fiberglass-composite',
+      'engineering-design-process',
+    ],
+  },
 ];
 
 export const collections: Collection[] = parseContent(

@@ -1,0 +1,2 @@
+# Never upload local secrets to a deployment.
+.env*
